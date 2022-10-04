@@ -222,9 +222,30 @@ T DoubleLinkedList<T>::last() const {
 // =================================================================
 template <class T>
 T DoubleLinkedList<T>::before(T val) const {
-	
-	return val;
+	//TO DO
+	Node<T> *p, *q;
+	p = head;
+
+		if(empty()){
+			throw NoSuchElement();
+		}
+		//p = p->next;
+		
+	for(int i = 0; i < size; i++){
+		if(val == p->value && i == 0){
+			throw NoSuchElement();
+		}
+
+		else if(val == p->value){
+			q = p->previous;
+			val = q->value;
+			return val;
+		}
+		p = p->next;
+	}
+	throw NoSuchElement();
 }
+
 
 // =================================================================
 // Returns the value after the first occurrence of certain value.
@@ -233,8 +254,27 @@ T DoubleLinkedList<T>::before(T val) const {
 // =================================================================
 template <class T>
 T DoubleLinkedList<T>::after(T val) const {
-	
-	return val;
+	//TO DO
+	Node<T> *p, *q;
+	p = head;
+
+		if(empty()){
+			throw NoSuchElement();
+		}
+		
+	for(int i = 0; i < size; i++){
+		if(val == p->value && i == size - 1){
+			throw NoSuchElement();
+		}
+
+		else if(val == p->value){
+			q = p->next;
+			val = q->value;
+			return val;
+		}
+		p = p->next;
+	}
+	throw NoSuchElement();
 }
 
 // =================================================================
@@ -295,6 +335,29 @@ void DoubleLinkedList<T>::push_back(T val) {
 template <class T>
 void DoubleLinkedList<T>::insert_before(T lookingFor, T newVal) {
 	// TO DO
+	Node<T> *p, *q, *r;
+	p = head;
+	int counter;
+
+	if (p->value == lookingFor){
+		push_front(newVal);
+		return;
+	}
+	while(p->value != lookingFor){
+		p = p->next;
+		counter++;
+		if(counter >= size){
+				throw NoSuchElement();
+			}
+		}
+
+	q = p->previous;
+	r = new Node<T>(newVal);
+	q->next = r;
+	p->previous = r;
+	r->next = p;
+	r->previous = q;
+	size++;
 }
 
 // =================================================================
@@ -305,6 +368,30 @@ void DoubleLinkedList<T>::insert_before(T lookingFor, T newVal) {
 template <class T>
 void DoubleLinkedList<T>::insert_after(T lookingFor, T newVal) {
 	// TO DO
+	Node<T> *p, *q, *r;
+	p = head;
+	int counter = 0;
+
+	while(lookingFor != p->value){
+		p = p->next;
+		counter++;
+		if(counter >= size){
+				throw NoSuchElement();
+			}
+	}
+
+	if (p->next == NULL){
+		push_back(newVal);
+		return;
+	}
+
+	q = p->next;
+	r = new Node<T>(newVal);
+	q->previous = r;
+	p->next = r;
+	r->next = q;
+	r->previous = p;
+	size++;
 }
 
 // =================================================================
